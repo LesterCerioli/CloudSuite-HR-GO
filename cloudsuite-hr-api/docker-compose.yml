@@ -10,10 +10,10 @@ services:
     depends_on:
       - db
     environment:
-      DB_HOST: db
-      DB_USER: user
-      DB_PASSWORD: password
-      DB_NAME: time_db
+      DB_HOST: localhost
+      DB_USER: postgres
+      DB_PASSWORD: secret
+      DB_NAME: cloudsuite_hr_db
     volumes:
       - .:/app
 

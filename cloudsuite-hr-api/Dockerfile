@@ -2,13 +2,12 @@ FROM golang:1.23
 
 WORKDIR /app
 
-COPY go.mod go.sum ./
-RUN go mod download
-
 COPY . .
 
-RUN go build -o /api ./main.go
+RUN go mod tidy
 
-EXPOSE 3000
+RUN go build -o main .
+
+EXPOSE 8080
 
 CMD ["./main"]

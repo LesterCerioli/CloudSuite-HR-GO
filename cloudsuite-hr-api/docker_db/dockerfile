@@ -1,8 +1,0 @@
-FROM postgres:13
-
-ENV POSTGRES_DB=cloudsuite_hr_db
-ENV POSTGRES_USER=postgres
-ENV POSTGRES_PASSWORD=lucastechnology
-
-
-EXPOSE 5432

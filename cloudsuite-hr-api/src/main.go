@@ -8,9 +8,16 @@ import (
 	"cloudsuite-hr-api/services"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/joho/godotenv"
+	"log"
+	"os"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Erro ao carregar o arquivo .env: %v", err)
+	}
 	config.InitDB()
 
 	timeRespository := repositories.NewTimeRepository(config.DB)
@@ -23,5 +30,9 @@ func main() {
 
 	routes.SetupRoutes(app, timeController)
 
-	app.Listen(":3000")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+	app.Listen(":" + port)
 }

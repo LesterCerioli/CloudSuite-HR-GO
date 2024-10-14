@@ -8,6 +8,7 @@ import (
 type TimeService interface {
 	CreateTime(time models.Time) error
 	GetAllTimes() ([]models.Time, error)
+	GetTimesByDate(date string) ([]models.Time, error)
 }
 
 type timeService struct {
@@ -24,4 +25,8 @@ func (s *timeService) CreateTime(time models.Time) error {
 
 func (s *timeService) GetAllTimes() ([]models.Time, error) {
 	return s.repo.GetAllTimes()
+}
+
+func (s *timeService) GetTimesByDate(date string) ([]models.Time, error) {
+	return s.repo.GetTimesByDate(date)
 }

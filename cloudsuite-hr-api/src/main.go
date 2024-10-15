@@ -1,8 +1,8 @@
 package main
 
 import (
-	"cloudsuite-hr-api/config"
 	"cloudsuite-hr-api/controllers"
+	"cloudsuite-hr-api/database"
 	"cloudsuite-hr-api/repositories"
 	"cloudsuite-hr-api/services"
 	"github.com/gofiber/fiber/v2"
@@ -10,9 +10,9 @@ import (
 )
 
 func main() {
-	config.InitDB()
+	database.InitDB()
 
-	timeRespository := repositories.NewTimeRepository(config.DB)
+	timeRespository := repositories.NewTimeRepository(database.DB)
 	timeService := services.NewTimeService(timeRespository)
 	timeController := controllers.NewTimeController(timeService)
 

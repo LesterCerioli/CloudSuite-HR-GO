@@ -1,13 +1,13 @@
 package database
 
 import (
+	"cloudsuite-hr-api/models"
 	"fmt"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 	"log"
 	"os"
 	"time"
-
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
@@ -33,6 +33,13 @@ func InitDB() {
 		time.Sleep(5 * time.Second)
 	}
 
-	panic(fmt.Sprintf("Failed to connect to database after %d attempts: %v", maxAttempts, err))
+	if err != nil {
+		panic(fmt.Sprintf("Failed to connect to database after %d attempts: %v", maxAttempts, err))
+	}
 
+	err = DB.AutoMigrate(&models.Time{})
+	if err != nil {
+		log.Fatalf("Migration failed: %v", err)
+	}
+	log.Println("Migration completed successfully")
 }

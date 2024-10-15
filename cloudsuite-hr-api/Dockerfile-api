@@ -1,0 +1,26 @@
+# Dockerfile-api
+FROM golang:1.23.1
+
+# Definir diretório de trabalho no container
+WORKDIR /app
+
+# Copiar o go.mod e go.sum para o container
+# Alteração aqui: o go.mod está no diretório src, então vamos ajustar o caminho
+COPY src/go.mod src/go.sum ./
+
+# Baixar as dependências do projeto
+RUN go mod download
+
+# Copiar o restante do código
+COPY src .
+
+COPY .env .env
+
+# Compilar a aplicação
+RUN go build -o main ./main.go
+
+# Expõe a porta da API
+EXPOSE 3000
+
+# Comando para rodar a aplicação
+CMD ["./main"]

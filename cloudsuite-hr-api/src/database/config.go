@@ -12,7 +12,7 @@ import (
 
 var DB *gorm.DB
 
-func InitDB() {
+func InitDB() *gorm.DB {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 		os.Getenv("POSTGRES_HOST"),
 		os.Getenv("POSTGRES_USER"),
@@ -26,7 +26,7 @@ func InitDB() {
 		DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 		if err == nil {
 			log.Printf("Database connection established successfully.")
-			return
+			break
 		}
 
 		log.Printf("Failed to connect to database, retrying in 5 seconds... (%d/%d)\n", attempts+1, maxAttempts)
@@ -42,4 +42,6 @@ func InitDB() {
 		log.Fatalf("Migration failed: %v", err)
 	}
 	log.Println("Migration completed successfully")
+
+	return DB
 }

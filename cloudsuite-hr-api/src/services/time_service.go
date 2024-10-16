@@ -2,30 +2,27 @@ package services
 
 import (
 	"cloudsuite-hr-api/models"
-	"cloudsuite-hr-api/repositories"
 	"errors"
 	"fmt"
+	"gorm.io/gorm"
 	"log"
 	"time"
-	
 )
 
 type TimeService interface {
-	CreateTime(time models.Time) error
-	GetAllTimes() ([]models.Time, error)
-	GetTimesByDate(date string) ([]models.Time, error)
+	CreateTime(time models.Time, db *gorm.DB) error
+	GetAllTimes(db *gorm.DB) ([]models.Time, error)
+	GetTimesByDate(date string, db *gorm.DB) ([]models.Time, error)
 }
 
-type timeService struct {
-	repo repositories.TimeRepository
-}
+type timeService struct{}
 
-func NewTimeService(repo repositories.TimeRepository) TimeService {
-	return &timeService{repo: repo}
+func NewTimeService() TimeService {
+	return &timeService{}
 }
 
 // CreateTime with retry and logging
-func (s *timeService) CreateTime(timeCreated models.Time) error {
+func (s *timeService) CreateTime(timeCreated models.Time, db *gorm.DB) error {
 	maxRetries := 3
 	retryInterval := 3 * time.Millisecond
 	var err error
@@ -34,7 +31,7 @@ func (s *timeService) CreateTime(timeCreated models.Time) error {
 		startDate := time.Now()
 		log.Printf("Processing started at: %s", startDate)
 
-		err = s.repo.CreateTime(timeCreated)
+		err = db.Create(&timeCreated).Error
 		endDate := time.Now()
 
 		if err == nil {
@@ -61,7 +58,7 @@ func (s *timeService) CreateTime(timeCreated models.Time) error {
 }
 
 // GetAllTimes with retry and logging
-func (s *timeService) GetAllTimes() ([]models.Time, error) {
+func (s *timeService) GetAllTimes(db *gorm.DB) ([]models.Time, error) {
 	maxRetries := 3
 	retryInterval := 3 * time.Millisecond
 	var err error
@@ -71,7 +68,7 @@ func (s *timeService) GetAllTimes() ([]models.Time, error) {
 		startDate := time.Now()
 		log.Printf("Processing started at: %s", startDate)
 
-		times, err = s.repo.GetAllTimes()
+		err = db.Find(&times).Error
 		endDate := time.Now()
 
 		if err == nil {
@@ -99,7 +96,7 @@ func (s *timeService) GetAllTimes() ([]models.Time, error) {
 }
 
 // GetTimesByDate with retry and logging
-func (s *timeService) GetTimesByDate(date string) ([]models.Time, error) {
+func (s *timeService) GetTimesByDate(date string, db *gorm.DB) ([]models.Time, error) {
 	maxRetries := 3
 	retryInterval := 3 * time.Millisecond
 	var err error
@@ -109,7 +106,7 @@ func (s *timeService) GetTimesByDate(date string) ([]models.Time, error) {
 		startDate := time.Now()
 		log.Printf("Processing started at: %s", startDate)
 
-		times, err = s.repo.GetTimesByDate(date)
+		err = db.Where("Date = ?", date).Find(&times).Error
 		endDate := time.Now()
 
 		if err == nil {

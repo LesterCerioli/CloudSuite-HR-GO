@@ -13,6 +13,9 @@ type TimeService interface {
 	CreateTime(time models.Time) error
 	GetAllTimes() ([]models.Time, error)
 	GetTimesByDate(date string) ([]models.Time, error)
+	GetTimesByYear(year int) ([]models.Time, error)
+	GetTimesByMonth(month int) ([]models.Time, error)
+	GetTimesByDay(day int) ([]models.Time, error)
 }
 
 type timeService struct {
@@ -133,4 +136,22 @@ func (s *timeService) GetTimesByDate(date string) ([]models.Time, error) {
 	}
 
 	return nil, errors.New(fmt.Sprintf("Max retries reached: %v", err))
+}
+
+func (s *timeService) GetTimesByYear(year int) ([]models.Time, error) {
+	var times []models.Time
+	err := s.db.Where("EXTRACT(YEAR FROM entry_time) = ?", year).Find(&times).Error
+	return times, err
+}
+
+func (s *timeService) GetTimesByMonth(month int) ([]models.Time, error) {
+	var times []models.Time
+	err := s.db.Where("EXTRACT(MONTH FROM entry_time) = ?", month).Find(&times).Error
+	return times, err
+}
+
+func (s *timeService) GetTimesByDay(day int) ([]models.Time, error) {
+	var times []models.Time
+	err := s.db.Where("EXTRACT(DAY FROM entry_time) = ?", day).Find(&times).Error
+	return times, err
 }

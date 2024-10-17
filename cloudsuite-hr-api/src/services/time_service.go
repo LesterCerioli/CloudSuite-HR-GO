@@ -139,19 +139,109 @@ func (s *timeService) GetTimesByDate(date string) ([]models.Time, error) {
 }
 
 func (s *timeService) GetTimesByYear(year int) ([]models.Time, error) {
+	maxRetries := 3
+	retryInterval := 3 * time.Millisecond
+	var err error
 	var times []models.Time
-	err := s.db.Where("EXTRACT(YEAR FROM entry_time) = ?", year).Find(&times).Error
-	return times, err
+
+	for i := 0; i < maxRetries; i++ {
+		startDate := time.Now()
+		log.Printf("Processing started at: %s", startDate)
+
+		err = s.db.Where("EXTRACT(YEAR FROM entry_time) = ?", year).Find(&times).Error
+		endDate := time.Now()
+
+		if err == nil {
+			processingDuration := endDate.Sub(startDate)
+			log.Printf("Success: Date: %s, Start: %s, End: %s, Duration: %s",
+				time.Now().Format(time.RFC3339),
+				startDate.Format(time.RFC3339),
+				endDate.Format(time.RFC3339),
+				processingDuration)
+			return times, nil
+		}
+
+		processingDuration := endDate.Sub(startDate)
+		log.Printf("Failure: Date: %s, Start: %s, End: %s, Duration: %s, Error: %s",
+			time.Now().Format(time.RFC3339),
+			startDate.Format(time.RFC3339),
+			endDate.Format(time.RFC3339),
+			processingDuration, err.Error())
+
+		time.Sleep(retryInterval)
+	}
+
+	return nil, errors.New(fmt.Sprintf("Max retries reached: %v", err))
 }
 
 func (s *timeService) GetTimesByMonth(month int) ([]models.Time, error) {
+	maxRetries := 3
+	retryInterval := 3 * time.Millisecond
+	var err error
 	var times []models.Time
-	err := s.db.Where("EXTRACT(MONTH FROM entry_time) = ?", month).Find(&times).Error
-	return times, err
+
+	for i := 0; i < maxRetries; i++ {
+		startDate := time.Now()
+		log.Printf("Processing started at: %s", startDate)
+
+		err = s.db.Where("EXTRACT(MONTH FROM entry_time) = ?", month).Find(&times).Error
+		endDate := time.Now()
+
+		if err == nil {
+			processingDuration := endDate.Sub(startDate)
+			log.Printf("Success: Date: %s, Start: %s, End: %s, Duration: %s",
+				time.Now().Format(time.RFC3339),
+				startDate.Format(time.RFC3339),
+				endDate.Format(time.RFC3339),
+				processingDuration)
+			return times, nil
+		}
+
+		processingDuration := endDate.Sub(startDate)
+		log.Printf("Failure: Date: %s, Start: %s, End: %s, Duration: %s, Error: %s",
+			time.Now().Format(time.RFC3339),
+			startDate.Format(time.RFC3339),
+			endDate.Format(time.RFC3339),
+			processingDuration, err.Error())
+
+		time.Sleep(retryInterval)
+	}
+
+	return nil, errors.New(fmt.Sprintf("Max retries reached: %v", err))
 }
 
 func (s *timeService) GetTimesByDay(day int) ([]models.Time, error) {
+	maxRetries := 3
+	retryInterval := 3 * time.Millisecond
+	var err error
 	var times []models.Time
-	err := s.db.Where("EXTRACT(DAY FROM entry_time) = ?", day).Find(&times).Error
-	return times, err
+
+	for i := 0; i < maxRetries; i++ {
+		startDate := time.Now()
+		log.Printf("Processing started at: %s", startDate)
+
+		err = s.db.Where("EXTRACT(DAY FROM entry_time) = ?", day).Find(&times).Error
+		endDate := time.Now()
+
+		if err == nil {
+			processingDuration := endDate.Sub(startDate)
+			log.Printf("Success: Date: %s, Start: %s, End: %s, Duration: %s",
+				time.Now().Format(time.RFC3339),
+				startDate.Format(time.RFC3339),
+				endDate.Format(time.RFC3339),
+				processingDuration)
+			return times, nil
+		}
+
+		processingDuration := endDate.Sub(startDate)
+		log.Printf("Failure: Date: %s, Start: %s, End: %s, Duration: %s, Error: %s",
+			time.Now().Format(time.RFC3339),
+			startDate.Format(time.RFC3339),
+			endDate.Format(time.RFC3339),
+			processingDuration, err.Error())
+
+		time.Sleep(retryInterval)
+	}
+
+	return nil, errors.New(fmt.Sprintf("Max retries reached: %v", err))
 }

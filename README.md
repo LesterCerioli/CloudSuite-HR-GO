@@ -1,64 +1,64 @@
 # Cloudsuite-HR-GO
 
-Esta API foi desenvolvida em Go utilizando o framework Fiber para gerenciar registros de ponto. Ela permite a criação, visualização e filtragem de registros de tempo por data, ano, mês e dia.
+This API was developed in Go using the Fiber framework to manage time records. It allows the creation, viewing, and filtering of time records by date, year, month, and day.
 
-## Tecnologias Utilizadas
+## Technologies Used
 
-- **Golang**: Linguagem de programação principal.
-- **Fiber**: Framework de web rápido e minimalista para Go.
-- **GORM**: ORM (Object Relational Mapping) para manipulação de banco de dados.
-- **PostgreSQL**: Banco de dados utilizado.
-- **Docker**: Contêinerização para ambientes de desenvolvimento e produção.
-- **UUID**: Geração de identificadores únicos.
+- **Golang**: Main programming language.
+- **Fiber**: Fast and minimalist web framework for Go.
+- **GORM**: ORM (Object Relational Mapping) for database manipulation.
+- **PostgreSQL**: Database used.
+- **Docker**: Containerization for development and production environments.
+- **UUID**: Generation of unique identifiers.
 
-## Funcionalidades
+## Features
 
-A API permite:
+The API allows:
 
-- Criar um novo registro de ponto.
-- Obter todos os registros de ponto.
-- Obter registros de ponto filtrados por data, ano, mês ou dia.
+- Create a new time record.
+- Get all time records.
+- Get time records filtered by date, year, month, or day.
 
 ## Docker 
 
-- **Caminho do terminal**: CloudSuite-HR-GO\cloudsuite-hr-api
-- **Comando para iniciar o docker**: docker-compose up -d
+- **Terminal Path**: CloudSuite-HR-GO\cloudsuite-hr-api
+- **Command to start docker**: docker-compose up -d
 
-<img src="./img/docker_comando_init.png" alt="Comando para iniciar o docker">
+<img src="./img/docker_comando_init.png" alt="Command to start docker">
 
-- **Imagens Docker**
+- **Docker Images**
 
-<img src="./img/docker_img.png" alt="Imagens da API e Database no docker">
+<img src="./img/docker_img.png" alt="API and Database images in docker">
 
-- **Container Docker**
+- **Docker Container**
 
-<img src="./img/docker_container.png" alt="Container Docker">
+<img src="./img/docker_container.png" alt="Docker Container">
 
 ## Migration
 
-- **Caminho do terminal**: CloudSuite-HR-GO\cloudsuite-hr-api\src
-- **Comando para criar a tabela times**: migrate -path ./migrations -database "postgres://postgres:lucastechnology@localhost:5432/cloudsuite_hr_db?sslmode=disable" up
+- **Terminal Path**: CloudSuite-HR-GO\cloudsuite-hr-api\src
+- **Command to create the times table**: migrate -path ./migrations -database "postgres://postgres:lucastechnology@localhost:5432/cloudsuite_hr_db?sslmode=disable" up
 
-<img src="./img/migration_comand_init.png" alt="Comando para criar a tabela times">
+<img src="./img/migration_comand_init.png" alt="Command to create the times table">
 
-- **Visão da tabela no DBeaver**
+- **Table View in DBeaver**
 
-<img src="./img/migration_table_times.png" alt="Visão tabela times">
+<img src="./img/migration_table_times.png" alt="Times table view">
 
-## Rotas
+## Routes
 
-	Post("/times") Criar um novo registro de ponto.
-	Get("/times") Obter todos os registros de ponto.
-	Get("/times/date/:date") Obter registros de ponto filtrados por data.
-	Get("/times/year/:year") Obter registros de ponto filtrados por ano.
-	Get("/times/month/:month") Obter registros de ponto filtrados por mês.
-	Get("/times/day/:day") Obter registros de ponto filtrados por dia.
+	Post("/times") Create a new time record.
+	Get("/times") Get all time records.
+	Get("/times/date/:date") Get time records filtered by date.
+	Get("/times/year/:year") Get time records filtered by year.
+	Get("/times/month/:month") Get time records filtered by month.
+	Get("/times/day/:day") Get time records filtered by day.
 
-### Criar
+### Create
 
-- **Rota**: `POST /times`
-- **Descrição**: Cria um novo registro de ponto.
-- **Exemplo de Body**:
+- **Route**: `POST /times`
+- **Description**: Creates a new time record.
+- **Body Example**:
   ```json
   {
     "date": "2024-10-18",

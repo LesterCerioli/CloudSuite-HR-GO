@@ -1,0 +1,19 @@
+# Dockerfile-db
+FROM postgres:13
+
+# Usando variáveis de ambiente do .env
+ARG POSTGRES_USER
+ARG POSTGRES_PASSWORD
+ARG POSTGRES_DB
+
+# Definindo variáveis de ambiente no container
+ENV POSTGRES_USER=$POSTGRES_USER
+ENV POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+ENV POSTGRES_DB=$POSTGRES_DB
+
+# Expõe a porta padrão do Postgres
+EXPOSE 5432
+
+# Comando para inicializar o Postgres
+CMD ["postgres"]
+

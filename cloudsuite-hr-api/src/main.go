@@ -3,7 +3,7 @@ package main
 import (
 	"cloudsuite-hr-api/controllers"
 	"cloudsuite-hr-api/database"
-	_ "cloudsuite-hr-api/docs" // Importa a documentação gerada pelo swag
+	_ "cloudsuite-hr-api/docs" 
 	"cloudsuite-hr-api/migrations"
 	"cloudsuite-hr-api/services"
 	"github.com/gofiber/fiber/v2"

@@ -4,9 +4,10 @@ import (
 	"cloudsuite-hr-api/models"
 	"errors"
 	"fmt"
-	"gorm.io/gorm"
 	"log"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type TimeService interface {
@@ -26,7 +27,6 @@ func NewTimeService(db *gorm.DB) TimeService {
 	return &timeService{db: db}
 }
 
-// CreateTime with retry and logging
 func (s *timeService) CreateTime(timeCreated models.Time) error {
 	maxRetries := 3
 	retryInterval := 3 * time.Millisecond
@@ -56,13 +56,11 @@ func (s *timeService) CreateTime(timeCreated models.Time) error {
 			endDate.Format(time.RFC3339),
 			processingDuration, err.Error())
 
-		// Aguarda antes de tentar novamente
 		time.Sleep(retryInterval)
 	}
 	return errors.New(fmt.Sprintf("Max retries reached: %v", err))
 }
 
-// GetAllTimes with retry and logging
 func (s *timeService) GetAllTimes() ([]models.Time, error) {
 	maxRetries := 3
 	retryInterval := 3 * time.Millisecond
@@ -93,14 +91,12 @@ func (s *timeService) GetAllTimes() ([]models.Time, error) {
 			endDate.Format(time.RFC3339),
 			processingDuration, err.Error())
 
-		// Aguarda antes de tentar novamente
 		time.Sleep(retryInterval)
 	}
 
 	return nil, errors.New(fmt.Sprintf("Max retries reached: %v", err))
 }
 
-// GetTimesByDate with retry and logging
 func (s *timeService) GetTimesByDate(date string) ([]models.Time, error) {
 	maxRetries := 3
 	retryInterval := 3 * time.Millisecond
@@ -131,7 +127,6 @@ func (s *timeService) GetTimesByDate(date string) ([]models.Time, error) {
 			endDate.Format(time.RFC3339),
 			processingDuration, err.Error())
 
-		// Aguarda antes de tentar novamente
 		time.Sleep(retryInterval)
 	}
 

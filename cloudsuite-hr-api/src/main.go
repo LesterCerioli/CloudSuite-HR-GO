@@ -3,9 +3,10 @@ package main
 import (
 	"cloudsuite-hr-api/controllers"
 	"cloudsuite-hr-api/database"
-	_ "cloudsuite-hr-api/docs" 
+	_ "cloudsuite-hr-api/docs"
 	"cloudsuite-hr-api/migrations"
 	"cloudsuite-hr-api/services"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/swagger"
@@ -27,7 +28,6 @@ func main() {
 	app := fiber.New()
 	app.Use(logger.New())
 
-	// Rota do Swagger UI
 	app.Get("/swagger/*", swagger.HandlerDefault)
 
 	timeController.SetupRoutes(app)
